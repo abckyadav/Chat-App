@@ -1,10 +1,12 @@
 import React from "react";
-import MenuHeader from "./MenuHeader";
+import Header from "./Header";
+import SearchBox from "./SearchBox";
 
 const Menu = () => {
   return (
     <div>
-      <MenuHeader />
+      <Header />
+      <SearchBox />
     </div>
   );
 };

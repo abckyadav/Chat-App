@@ -11,6 +11,9 @@ const theme = createTheme({
     primary: {
       main: "#00a884",
     },
+    icon: {
+      main: "#54656f",
+    },
   },
 });
 

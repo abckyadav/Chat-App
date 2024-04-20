@@ -1,20 +1,37 @@
-import React from "react";
-import LoginDialog from "./Account/LoginDialog";
+import React, { useContext } from "react";
+import LoginScreen from "./Account/LoginScreen";
+import ChatScreen from "./Chat/ChatScreen";
 import { AppBar, styled } from "@mui/material";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AccountContext } from "../Context/AccountProvider";
 
-const Header = styled(AppBar)`
+const LoginHeader = styled(AppBar)`
   height: 222px;
+  box-shadow: none;
+  z-index: -1;
+`;
+const ChatHeader = styled(AppBar)`
+  height: 127px;
   box-shadow: none;
   z-index: -1;
 `;
 
 const Messenger = () => {
+  const { account } = useContext(AccountContext);
+
   return (
-    <GoogleOAuthProvider clientId="75251371300-127nghmplqj442veo0pvlltcj0bjpt30.apps.googleusercontent.com">
-      <Header />
-      <LoginDialog />
-    </GoogleOAuthProvider>
+    <>
+      {account ? (
+        <>
+          <ChatHeader />
+          <ChatScreen />
+        </>
+      ) : (
+        <>
+          <LoginHeader />
+          <LoginScreen />
+        </>
+      )}
+    </>
   );
 };
 

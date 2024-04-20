@@ -7,17 +7,22 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import React from "react";
+import { useContext, useEffect, useState } from "react";
 import WhatsappLogo from "../Assets/WhatsappLogo.svg";
 import { qrCodeImage } from "../../Constants/data";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { AccountContext } from "../../Context/AccountProvider";
 
 const LogoHeader = styled(Box)`
   display: flex;
   width: 70%;
   gap: 1rem;
   margin: 2rem auto;
+
+  @media screen and (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const TitleHeading = styled("h2")`
@@ -32,6 +37,10 @@ const Boxshadow = styled("div")`
   border-radius: 5px;
   box-shadow: 0 17px 50px 0 rgba(11, 20, 26, 0.19),
     0 12px 15px 0 rgba(11, 20, 26, 0.24);
+
+  @media screen and (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const LoginDialogContainer = styled(Grid)`
@@ -42,8 +51,10 @@ const LoginDialogContainer = styled(Grid)`
   padding: 4rem;
   background: #fff;
 
-  @media (max-width: 768px) {
-    flex-direction: column-reverse; /* Change direction for smaller devices */
+  @media screen and (max-width: 768px) {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
   }
 `;
 
@@ -58,26 +69,51 @@ const LandingTitle = styled("div")`
 const BackgroundQRcodeImage = styled("div")`
   background-image: url(${qrCodeImage});
   background-repeat: no-repeat;
-  background-size: contain; /* This will make sure the image is fully visible within the available space */
-  width: 264px; /* This will make the div take up the full width of its container */
-  height: 264px; /* This will make the div take up the full height of its container */
+  background-size: contain;
+  width: 264px;
+  height: 264px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 1rem;
 `;
 
+const QrContainer = {
+  display: "flex",
+  justifyContent: "flex-end",
+
+  "@media screen and (max-width: 900px)": {
+    justifyContent: "center",
+  },
+};
+
 const TutorialContainer = styled(Grid)`
   width: 100%;
   padding: 2rem;
-  background: rgba(11, 20, 26, 0.025);
+  background: #f9f9fa;
 `;
 
-const LoginDialog = () => {
+const LoginScreen = () => {
+  const { setAccount } = useContext(AccountContext);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const onLoginSuccess = (res) => {
     const decoded = jwtDecode(res.credential);
 
     console.log(decoded);
+    setAccount(decoded);
   };
 
   const onLoginError = (res) => {
@@ -92,7 +128,7 @@ const LoginDialog = () => {
 
       <Boxshadow>
         <LoginDialogContainer container>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={6}>
             <Box>
               <LandingTitle>Use WhatsApp on your computer</LandingTitle>
               <List>
@@ -109,7 +145,7 @@ const LoginDialog = () => {
               </List>
             </Box>
           </Grid>
-          <Grid item xs={12} md={4} display="flex" justifyContent="flex-end">
+          <Grid item xs={12} md={6} sx={QrContainer}>
             <BackgroundQRcodeImage>
               {/* <QRcodeImage src={qrCodeImage} alt="qrCodeImage" /> */}
               <Box>
@@ -144,7 +180,12 @@ const LoginDialog = () => {
               Need help to get started
             </Typography>
 
-            <video autoPlay controls controlsList="nodownload" width="50%">
+            <video
+              autoPlay
+              controls
+              controlsList="nodownload"
+              width={windowWidth < 768 ? "100%" : "50%"}
+            >
               <source
                 src="https://static.whatsapp.net/rsrc.php/yn/r/6swO8kJM8z2.mp4"
                 type="video/mp4"
@@ -158,4 +199,4 @@ const LoginDialog = () => {
   );
 };
 
-export default LoginDialog;
+export default LoginScreen;

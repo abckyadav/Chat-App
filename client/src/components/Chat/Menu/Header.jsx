@@ -1,11 +1,11 @@
 import { Avatar, Box, styled } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AccountContext } from "../../../Context/AccountProvider";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import DonutLargeOutlinedIcon from "@mui/icons-material/DonutLargeOutlined";
 import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
 import HeaderMenu from "./HeaderMenu";
-
+import InfoDrawer from "../../drawer/InfoDrawer";
 
 const HeaderContainer = styled(Box)`
   display: flex;
@@ -28,6 +28,8 @@ const IconsContainer = styled(Box)`
 const Header = () => {
   const { account } = useContext(AccountContext);
   console.log("account:", account);
+  const [drawerStatus, setDrawerStatus] = useState(false);
+  const handleDrawer = () => setDrawerStatus(true);
 
   return (
     <HeaderContainer>
@@ -36,14 +38,22 @@ const Header = () => {
           alt={account.name}
           src={account.picture}
           sx={{ cursor: "pointer" }}
+          onClick={handleDrawer}
         />
       </Box>
+      
+        <InfoDrawer
+          open={drawerStatus}
+          setOpen={setDrawerStatus}
+     
+        />
+
 
       <IconsContainer>
         <GroupsOutlinedIcon color="icon" />
         <DonutLargeOutlinedIcon color="icon" />
         <AddCommentOutlinedIcon color="icon" />
-        <HeaderMenu/>
+        <HeaderMenu />
       </IconsContainer>
     </HeaderContainer>
   );

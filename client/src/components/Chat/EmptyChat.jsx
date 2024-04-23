@@ -33,7 +33,7 @@ const Title = styled(Typography)`
   & span {
     font-size: 0.7rem;
     background-color: #8080804e;
-    padding: 5px 10px;
+    padding: 3px 10px;
     border-radius: 50px;
     font-weight: 600;
   }
@@ -49,8 +49,24 @@ const SubTitle = styled(Typography)`
   align-items: center;
 `;
 
-const Spacer = styled(Box)`
-  height: 200px;
+const EncryptionMessage = styled(Box)`
+  position: absolute;
+  bottom: 1rem;
+
+  font-size: 14px;
+  font-family: inherit;
+  color: #667781;
+  font-weight: 400;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const Link = styled("a")`
+  text-decoration: none;
+  margin-left: 5px;
+  color: #00a884;
 `;
 
 const EmptyChat = () => {
@@ -67,10 +83,20 @@ const EmptyChat = () => {
         <SubTitle>
           Use WhatsApp on up to 4 linked devices and 1 phone at the same time.
         </SubTitle>
-        <Spacer />
-        <SubTitle>
-          {lockIcon} Your personal messages are end-to-end encrypted
+        <SubTitle sx={{ marginTop: "2rem" }}>
+          Make calls from desktop with WhatsApp for Windows.{" "}
+          <Link
+            target="blank"
+            href="https://www.microsoft.com/store/productId/9NKSQGP7F2NH?ocid=pdpshare"
+          >
+            {"  "}
+            Get it here.
+          </Link>
         </SubTitle>
+
+        <EncryptionMessage>
+          {lockIcon} Your personal messages are end-to-end encrypted
+        </EncryptionMessage>
       </EmptyChatWrapper>
     </EmptyChatContainer>
   );

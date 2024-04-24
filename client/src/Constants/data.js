@@ -22,7 +22,7 @@ export const lockIcon = (
     height="12"
     width="10"
     preserveAspectRatio="xMidYMid meet"
-    class=""
+    className=""
     version="1.1"
   >
     <title>lock-small</title>

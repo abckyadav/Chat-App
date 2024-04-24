@@ -13,6 +13,7 @@ import { qrCodeImage } from "../../Constants/data";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { AccountContext } from "../../Context/AccountProvider";
+import { addUser } from "../../service/api";
 
 const LogoHeader = styled(Box)`
   display: flex;
@@ -114,6 +115,7 @@ const LoginScreen = () => {
 
     console.log(decoded);
     setAccount(decoded);
+    addUser(decoded);
   };
 
   const onLoginError = (res) => {

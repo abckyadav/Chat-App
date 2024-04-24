@@ -41,19 +41,14 @@ const Header = () => {
           onClick={handleDrawer}
         />
       </Box>
-      
-        <InfoDrawer
-          open={drawerStatus}
-          setOpen={setDrawerStatus}
-     
-        />
 
+      <InfoDrawer open={drawerStatus} setOpen={setDrawerStatus} />
 
       <IconsContainer>
         <GroupsOutlinedIcon color="icon" />
         <DonutLargeOutlinedIcon color="icon" />
         <AddCommentOutlinedIcon color="icon" />
-        <HeaderMenu />
+        <HeaderMenu setOpen={setDrawerStatus} />
       </IconsContainer>
     </HeaderContainer>
   );

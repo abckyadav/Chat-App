@@ -14,7 +14,7 @@ const CustomMenu = styled(Menu)`
     0 2px 10px 0 rgba(11, 20, 26, 0.16);
 `;
 
-const HeaderMenu = () => {
+const HeaderMenu = ({ setOpen }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -24,6 +24,10 @@ const HeaderMenu = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const toggleDrawer = () => {
+    setOpen(true);
   };
 
   return (
@@ -47,7 +51,14 @@ const HeaderMenu = () => {
           horizontal: "right",
         }}
       >
-        <MenuOption onClick={handleClose}>Profile</MenuOption>
+        <MenuOption
+          onClick={() => {
+            handleClose();
+            toggleDrawer();
+          }}
+        >
+          Profile
+        </MenuOption>
         <MenuOption onClick={handleClose}>My account</MenuOption>
         <MenuOption onClick={handleClose}>Logout</MenuOption>
       </CustomMenu>

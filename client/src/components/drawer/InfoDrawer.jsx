@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Box, Drawer, Typography, styled } from "@mui/material";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { AccountContext } from "../../Context/AccountProvider";
@@ -51,15 +51,15 @@ const YourName = styled(Box)`
   background-color: #fff;
   padding: 1rem;
   box-shadow: 0 1px 3px rgba(11, 20, 26, 0.08);
+`;
 
-  & :first-child {
-    color: #009688;
-    font-size: 0.8rem;
-    font-weight: 300;
-  }
-  & :last-child {
-    margin-top: 0.8rem;
-  }
+const YourNameHeading = styled(Typography)`
+  color: #009688;
+  font-size: 0.8rem;
+  font-weight: 300;
+`;
+const YourNameSubHeading = styled(Typography)`
+  margin-top: 0.8rem;
 `;
 const Disclaimer = styled(Box)`
   background-color: #ededed;
@@ -71,40 +71,14 @@ const About = styled(Box)`
   background-color: #fff;
   padding: 1rem;
   box-shadow: 0 1px 3px rgba(11, 20, 26, 0.08);
-
-  & :first-child {
-    color: #009688;
-    font-size: 0.8rem;
-    font-weight: 300;
-  }
-  & :last-child {
-    margin-top: 0.8rem;
-  }
 `;
 
 const InfoDrawer = ({ open, setOpen }) => {
   const { account } = useContext(AccountContext);
-  const [profileImageUrl, setProfileImageUrl] = useState(account.picture);
-
-  const enlargePicture = () => {
-    let newSize = 1080; // For example, set the new size to 200
-
-    // Split the URL string at the "=" sign
-    let parts = account.picture.split("=s");
-
-    // Construct the new URL with the dynamically changed size
-    let newPictureUrl = parts[0] + "=s" + newSize;
-    setProfileImageUrl(newPictureUrl);
-  };
 
   const handleClose = () => {
     setOpen(false);
   };
-
-  useEffect(() => {
-    enlargePicture();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profileImageUrl]);
 
   return (
     <Drawer
@@ -123,19 +97,21 @@ const InfoDrawer = ({ open, setOpen }) => {
       </DrawerHeader>
 
       <ProfilePictureContainer>
-        <Image alt={account.name} src={profileImageUrl} />
+        <Image alt={account.given_name} src={account.picture} />
       </ProfilePictureContainer>
       <YourName>
-        <Typography>Your Name</Typography>
-        <Typography>{account.name}</Typography>
+        <YourNameHeading>Your Name</YourNameHeading>
+        <YourNameSubHeading>{account.name}</YourNameSubHeading>
       </YourName>
       <Disclaimer>
         This is not your username or pin. This name will be visible to your
         Whatsapp contacts
       </Disclaimer>
       <About>
-        <Typography>About</Typography>
-        <Typography>Eat 🥪 | Sleep 😴 | Code 💻 | Repeat</Typography>
+        <YourNameHeading>About</YourNameHeading>
+        <YourNameSubHeading>
+          Eat 🥪 | Sleep 😴 | Code 💻 | Repeat
+        </YourNameSubHeading>
       </About>
     </Drawer>
   );

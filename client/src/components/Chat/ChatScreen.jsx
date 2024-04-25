@@ -1,7 +1,9 @@
 import { Box, Dialog, styled } from "@mui/material";
-import React from "react";
+import { useContext } from "react";
 import Menu from "./Menu/Menu";
 import EmptyChat from "./EmptyChat";
+import ConversationScreen from "./CoversationScreen/ConversationScreen";
+import { AccountContext } from "../../Context/AccountProvider";
 
 const dialogStyle = {
   height: "95%",
@@ -41,6 +43,9 @@ const RightContainer = styled(Box)`
 `;
 
 const ChatScreen = () => {
+  const { person } = useContext(AccountContext);
+  console.log("person:", person);
+
   return (
     <Dialog open={true} hideBackdrop={true} PaperProps={{ sx: dialogStyle }}>
       <Container>
@@ -49,7 +54,11 @@ const ChatScreen = () => {
         </LeftContainer>
 
         <RightContainer>
-          <EmptyChat />
+          {person && Object.keys(person).length > 0 ? (
+            <ConversationScreen />
+          ) : (
+            <EmptyChat />
+          )}
         </RightContainer>
       </Container>
     </Dialog>

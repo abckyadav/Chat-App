@@ -27,7 +27,7 @@ const IconsContainer = styled(Box)`
 
 const Header = () => {
   const { account } = useContext(AccountContext);
-  console.log("account:", account);
+  // console.log("account:", account);
   const [drawerStatus, setDrawerStatus] = useState(false);
   const handleDrawer = () => setDrawerStatus(true);
 

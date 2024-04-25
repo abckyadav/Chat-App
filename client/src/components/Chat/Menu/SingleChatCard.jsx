@@ -1,5 +1,6 @@
 import { Box, Typography, styled } from "@mui/material";
-import React from "react";
+import { useContext } from "react";
+import { AccountContext } from "../../../Context/AccountProvider";
 
 const Card = styled(Box)`
   display: flex;
@@ -21,18 +22,28 @@ const Image = styled("img")`
   border-radius: 50%;
 `;
 
+const SubText = styled(Typography)`
+  font-size: 0.8rem;
+  color: #667781;
+`;
+
 const SingleChatCard = ({ user }) => {
-  console.log("user:", user.picture);
+  const { setPerson } = useContext(AccountContext);
+
+  const getUserDetails = () => {
+    setPerson(user);
+  };
+
   return (
     <>
-      <Card>
+      <Card onClick={() => getUserDetails()}>
         <CardWrapper>
           <Image src={user.picture} alt={user.given_name} />
         </CardWrapper>
         <Box>
           <Box>
             <Typography>{user.name}</Typography>
-            <Typography>message</Typography>
+            <SubText>message</SubText>
           </Box>
         </Box>
       </Card>

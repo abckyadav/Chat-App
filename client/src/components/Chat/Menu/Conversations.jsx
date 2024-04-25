@@ -38,7 +38,6 @@ const CustomDivider = styled(Divider)`
 
 const Conversations = () => {
   const { account } = useContext(AccountContext);
-  console.log("Conversations:", account);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -48,7 +47,7 @@ const Conversations = () => {
     };
 
     fetchUsers();
-    console.log("users:", users);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -58,10 +57,10 @@ const Conversations = () => {
         users?.map(
           (user) =>
             user?.sub !== account?.sub && (
-              <>
-                <SingleChatCard user={user} key={users?.sub} />
+              <React.Fragment key={user?.sub}>
+                <SingleChatCard user={user} />
                 <CustomDivider />
-              </>
+              </React.Fragment>
             )
         )}
     </ConversationContainer>

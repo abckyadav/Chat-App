@@ -1,10 +1,11 @@
 import { Box, styled } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import CoversationHeader from "./CoversationHeader";
 import ConversationMessages from "./ConversationMessages";
 import Footer from "./Footer";
 import { whatsappChatBackground } from "../../../Constants/data";
 import { AccountContext } from "../../../Context/AccountProvider";
+import { getConversation, getMessage, newMessage } from "../../../service/api";
 
 const Container = styled(Box)`
   background: url(${whatsappChatBackground});
@@ -16,12 +17,58 @@ const Container = styled(Box)`
 `;
 
 const ConversationScreen = () => {
-  const { person } = useContext(AccountContext);
+  const { person, account } = useContext(AccountContext);
+  const [conversation, setConversation] = useState({});
+  const [messageValue, setMessageValue] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [newMessageFlag, setNewMessageFlag] = useState(false);
+
+  const sendText = async (e) => {
+    const code = e.keyCode || e.which;
+
+    if (code === 13) {
+      let message = {
+        senderId: account.sub,
+        receiverId: person.sub,
+        conversationId: conversation._id,
+        type: "text",
+        text: messageValue,
+      };
+      console.log("message:", message);
+      await newMessage(message);
+      setMessageValue("");
+      setNewMessageFlag((prev) => !prev);
+    }
+  };
+
+  useEffect(() => {
+    const getConversationDetails = async () => {
+      let data = await getConversation({
+        senderId: account.sub,
+        receiverId: person.sub,
+      });
+      setConversation(data);
+    };
+    getConversationDetails();
+  }, [account.sub, person.sub]);
+
+  useEffect(() => {
+    const getMessageDetails = async () => {
+      let data = await getMessage(conversation?._id);
+      setMessages(data);
+    };
+    conversation?._id && getMessageDetails();
+  }, [conversation?._id, newMessageFlag]);
+
   return (
     <Container>
       <CoversationHeader person={person} />
-      <ConversationMessages person={person} />
-      <Footer />
+      <ConversationMessages conversation={conversation} messages={messages} />
+      <Footer
+        sendText={sendText}
+        setMessageValue={setMessageValue}
+        messageValue={messageValue}
+      />
     </Container>
   );
 };

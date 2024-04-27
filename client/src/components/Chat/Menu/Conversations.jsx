@@ -36,20 +36,24 @@ const CustomDivider = styled(Divider)`
   margin: 0 1rem 0 5rem;
 `;
 
-const Conversations = () => {
+const Conversations = ({ searchText }) => {
   const { account } = useContext(AccountContext);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       const res = await getUsers();
-      setUsers(res);
+
+      const filteredUsers = res.filter((user) =>
+        user.name.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setUsers(filteredUsers);
     };
 
     fetchUsers();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchText]);
 
   return (
     <ConversationContainer>

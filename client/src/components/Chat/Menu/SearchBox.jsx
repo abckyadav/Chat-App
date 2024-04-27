@@ -22,7 +22,7 @@ const CustomInputBase = styled(InputBase)`
   padding: 0 2rem 0 1rem;
 `;
 
-const SearchBox = () => {
+const SearchBox = ({ setSearchText }) => {
   return (
     <SearchBoxConatiner>
       <Wrapper>
@@ -34,6 +34,7 @@ const SearchBox = () => {
         <CustomInputBase
           placeholder="Search"
           inputProps={{ "aria-label": "search" }}
+          onChange={(event) => setSearchText(event.target.value)}
         />
       </Wrapper>
     </SearchBoxConatiner>

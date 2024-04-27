@@ -1,28 +1,26 @@
-import User from "../model/userModel.js";
+import userModel from "../model/userModel.js";
 
 export const addUser = async (req, res) => {
   try {
-    let existedUser = await User.findOne({ sub: req.body.sub });
+    let existedUser = await userModel.findOne({ sub: req.body.sub });
 
     if (existedUser) {
       return res.status(200).json({ msg: "User already exists" });
     }
 
-    const newUser = new User(req.body);
+    const newUser = new userModel(req.body);
     await newUser.save();
     return res.status(200).json(newUser);
   } catch (error) {
-    console.log("error in addUSer Controller:", error.message);
+    return res.status(500).json("error in addUSer Controller:", error.message);
   }
-
-  console.log("adduser", req.body);
 };
 
 export const getUser = async (req, res) => {
   try {
-    const allUsers = await User.find({});
+    const allUsers = await userModel.find({});
     return res.status(200).json(allUsers);
   } catch (error) {
-    console.log("error in getUser Controller:", error.message);
+    return res.status(500).json("error in getUser Controller:", error.message);
   }
 };

@@ -1,5 +1,7 @@
 import { Box, Typography, styled } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
+import { formatDate } from "../../../utils/commonUtils";
+import { AccountContext } from "../../../Context/AccountProvider";
 
 const Container = styled(Box)`
   overflow-y: auto;
@@ -31,7 +33,7 @@ const Container = styled(Box)`
 const ContainerWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
-  margin: 1rem 1.5rem;
+  margin: 1rem 4rem 1rem 6rem;
   gap: 0.2rem;
 
   width: 100%;
@@ -39,49 +41,68 @@ const ContainerWrapper = styled(Box)`
 const ReceivedText = styled(Box)`
   display: flex;
   justify-content: flex-start;
-  & > p {
-    background-color: #fff;
+  width: 60%;
+  word-break: break-all;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
   }
 `;
 const SentText = styled(Box)`
   display: flex;
   justify-content: flex-end;
+  width: 60%;
+  word-break: break-all;
+  margin-left: auto;
 
-  & > p {
+  & > div {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
     background-color: #d9fdd3;
   }
 `;
 
 const CutomTypography = styled(Typography)`
-  padding: 0.5rem;
-  border-radius: 0.5rem;
+  padding: 0.5rem 0.5rem 0.2rem 0.5rem;
+  font-size: 0.8rem;
+`;
+const TimeStaps = styled(Typography)`
+  min-width: fit-content;
+  font-size: 0.7rem;
+  color: #667781;
+  padding-right: 0.5rem;
+  margin-left: auto;
 `;
 
-const ConversationMessages = () => {
+const ConversationMessages = ({ messages }) => {
+  console.log("messages:", messages);
+  const { account } = useContext(AccountContext);
+
   return (
     <Container>
       <ContainerWrapper>
-        <ReceivedText>
-          <CutomTypography>1. Lorem ipsum dolor sit.</CutomTypography>
-        </ReceivedText>
-        <ReceivedText>
-          <CutomTypography>1. Lorem ipsum dolor sit.</CutomTypography>
-        </ReceivedText>
-        <SentText>
-          <CutomTypography>2. Lorem ipsum dolor sit.</CutomTypography>
-        </SentText>
-        <SentText>
-          <CutomTypography>2. Lorem ipsum dolor sit.</CutomTypography>
-        </SentText>
-        <ReceivedText>
-          <CutomTypography>3. Lorem ipsum dolor sit.</CutomTypography>
-        </ReceivedText>
-        <SentText>
-          <CutomTypography>4. Lorem ipsum dolor sit.</CutomTypography>
-        </SentText>
-        <ReceivedText>
-          <CutomTypography>5. Lorem ipsum dolor sit.</CutomTypography>
-        </ReceivedText>
+        {messages &&
+          messages.map((message) =>
+            account.sub === message.senderId ? (
+              <SentText key={message._id}>
+                <div>
+                  <CutomTypography>{message.text}</CutomTypography>
+                  <TimeStaps>{formatDate(message.createdAt)}</TimeStaps>
+                </div>
+              </SentText>
+            ) : (
+              <ReceivedText key={Math.random()}>
+                <div>
+                  <CutomTypography>{message.text}</CutomTypography>
+                  <TimeStaps>{formatDate(message.createdAt)}</TimeStaps>
+                </div>
+              </ReceivedText>
+            )
+          )}
       </ContainerWrapper>
     </Container>
   );

@@ -30,13 +30,18 @@ const CustomInput = styled(InputBase)`
   width: 100%;
 `;
 
-const Footer = () => {
+const Footer = ({ sendText, messageValue, setMessageValue }) => {
   return (
     <Container>
       <TagFacesOutlinedIcon color="icon" />
       <AttachFileOutlinedIcon color="icon" />
       <InputContainer>
-        <CustomInput placeholder="Type a message" />
+        <CustomInput
+          placeholder="Type a message"
+          onChange={(e) => setMessageValue(e.target.value)}
+          onKeyPress={(e) => sendText(e)}
+          value={messageValue}
+        />
       </InputContainer>
       <MicOutlinedIcon color="icon" />
     </Container>
@@ -44,5 +49,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-

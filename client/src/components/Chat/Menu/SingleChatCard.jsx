@@ -1,6 +1,7 @@
 import { Box, Typography, styled } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AccountContext } from "../../../Context/AccountProvider";
+import { setConversation } from "../../../service/api";
 
 const Card = styled(Box)`
   display: flex;
@@ -11,6 +12,12 @@ const Card = styled(Box)`
   &:hover {
     background-color: #f5f6f6;
   }
+
+  ${({ isSelected }) =>
+    isSelected &&
+    `
+    background-color: #f0f2f5;
+  `}
 `;
 const CardWrapper = styled(Box)`
   padding: 0 1rem;
@@ -28,15 +35,22 @@ const SubText = styled(Typography)`
 `;
 
 const SingleChatCard = ({ user }) => {
-  const { setPerson } = useContext(AccountContext);
+  const { account, person, setPerson } = useContext(AccountContext);
+  // eslint-disable-next-line no-unused-vars
+  const [isSelected, setIsSelected] = useState(false);
 
-  const getUserDetails = () => {
+  const getUserDetails = async () => {
     setPerson(user);
+    setIsSelected(true);
+    await setConversation({ senderId: account.sub, receiverId: user.sub });
   };
 
   return (
     <>
-      <Card onClick={() => getUserDetails()}>
+      <Card
+        isSelected={person && person.sub === user.sub}
+        onClick={() => getUserDetails()}
+      >
         <CardWrapper>
           <Image src={user.picture} alt={user.given_name} />
         </CardWrapper>

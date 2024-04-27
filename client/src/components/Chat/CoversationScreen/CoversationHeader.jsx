@@ -1,9 +1,8 @@
 import { Avatar, Box, Typography, styled } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import HeaderMenu from "../Menu/HeaderMenu";
 import InfoDrawer from "../../drawer/InfoDrawer";
-import { AccountContext } from "../../../Context/AccountProvider";
 
 const HeaderContainer = styled(Box)`
   display: flex;
@@ -40,8 +39,8 @@ const AccountStatus = styled(Typography)`
   color: #667781;
 `;
 
-const CoversationHeader = () => {
-  const { account } = useContext(AccountContext);
+const CoversationHeader = ({ person }) => {
+
   const [drawerStatus, setDrawerStatus] = useState(false);
   const handleDrawer = () => setDrawerStatus(true);
 
@@ -50,15 +49,15 @@ const CoversationHeader = () => {
       <LeftContainer>
         <Box>
           <Avatar
-            alt={account.name}
-            src={account.picture}
+            alt={person.given_name}
+            src={person.picture}
             sx={{ cursor: "pointer" }}
             onClick={handleDrawer}
           />
         </Box>
         <Box>
-          <AccountName>{account.name}</AccountName>
-          <AccountStatus>Online</AccountStatus>
+          <AccountName>{person.name}</AccountName>
+          <AccountStatus>Offline</AccountStatus>
         </Box>
       </LeftContainer>
 

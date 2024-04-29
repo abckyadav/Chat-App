@@ -1,7 +1,13 @@
 import { Box, Typography, styled } from "@mui/material";
 import React, { useContext } from "react";
-import { formatDate } from "../../../utils/commonUtils";
+import {
+  PdfNameExtract,
+  formatDate,
+  downloadMedia,
+} from "../../../utils/commonUtils";
 import { AccountContext } from "../../../Context/AccountProvider";
+import FileDownload from "@mui/icons-material/FileDownload";
+import { iconPDF } from "../../../Constants/data";
 
 const Container = styled(Box)`
   overflow-y: auto;
@@ -77,10 +83,99 @@ const TimeStaps = styled(Typography)`
   padding-right: 0.5rem;
   margin-left: auto;
 `;
+const PDFAttachmentDiv = styled("div")`
+  & svg {
+    border: 1px solid grey;
+    border-radius: 50%;
+  }
+`;
+
+const AttachmentDiv = styled("div")`
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 5px;
+  gap: 5px;
+  flex-direction: row;
+
+  & svg {
+    border: 1px solid grey;
+    border-radius: 50%;
+  }
+  & p {
+    margin: 0;
+    padding: 0;
+  }
+`;
 
 const ConversationMessages = ({ messages }) => {
-  console.log("messages:", messages);
   const { account } = useContext(AccountContext);
+
+  const TextMessage = ({ message }) => {
+    return (
+      <div>
+        <CutomTypography>{message.text}</CutomTypography>
+        <TimeStaps>{formatDate(message.createdAt)}</TimeStaps>
+      </div>
+    );
+  };
+
+  const ImageMessage = ({ message }) => {
+    return (
+      <>
+        {message?.text?.includes(".pdf") ? (
+          <PDFAttachmentDiv>
+            <div style={{ display: "flex", paddingRight: "0.5rem" }}>
+              <img
+                src={iconPDF}
+                alt={message.name}
+                style={{
+                  objectFit: "contain",
+                  maxHeight: "70px",
+                }}
+              />
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                }}
+              >
+                <CutomTypography>
+                  {PdfNameExtract(message.text)}
+                </CutomTypography>
+                <FileDownload
+                  onClick={(e) => downloadMedia(e, message.text)}
+                  color="icon"
+                  style={{ cursor: "pointer" }}
+                  fontSize="small"
+                />
+              </div>
+            </div>
+            <TimeStaps>{formatDate(message.createdAt)}</TimeStaps>
+          </PDFAttachmentDiv>
+        ) : (
+          <div style={{ padding: "2px", borderRadius: "0 0 0.5rem 0.5rem" }}>
+            <img
+              src={message.text}
+              alt={message.name}
+              style={{ maxWidth: "300px", objectFit: "cover" }}
+            />
+            <AttachmentDiv>
+              <FileDownload
+                onClick={(e) => downloadMedia(e, message.text)}
+                color="icon"
+                style={{ cursor: "pointer" }}
+                fontSize="small"
+              />
+              <TimeStaps>{formatDate(message.createdAt)}</TimeStaps>
+            </AttachmentDiv>
+          </div>
+        )}
+      </>
+    );
+  };
 
   return (
     <Container>
@@ -89,17 +184,19 @@ const ConversationMessages = ({ messages }) => {
           messages.map((message) =>
             account.sub === message.senderId ? (
               <SentText key={message._id}>
-                <div>
-                  <CutomTypography>{message.text}</CutomTypography>
-                  <TimeStaps>{formatDate(message.createdAt)}</TimeStaps>
-                </div>
+                {message.type === "file" ? (
+                  <ImageMessage message={message} />
+                ) : (
+                  <TextMessage message={message} />
+                )}
               </SentText>
             ) : (
               <ReceivedText key={Math.random()}>
-                <div>
-                  <CutomTypography>{message.text}</CutomTypography>
-                  <TimeStaps>{formatDate(message.createdAt)}</TimeStaps>
-                </div>
+                {message.type === "file" ? (
+                  <ImageMessage message={message} />
+                ) : (
+                  <TextMessage message={message} />
+                )}
               </ReceivedText>
             )
           )}

@@ -2,6 +2,8 @@ import { Box, styled, InputBase } from "@mui/material";
 import TagFacesOutlinedIcon from "@mui/icons-material/TagFacesOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
+import { useEffect } from "react";
+import { UploadFile } from "../../../service/api";
 
 const Container = styled(Box)`
   background-color: #f0f2f5;
@@ -15,7 +17,7 @@ const Container = styled(Box)`
     cursor: pointer;
   }
 
-  & > svg:nth-of-type(2) {
+  & > label {
     transform: rotate(40deg);
   }
 `;
@@ -26,15 +28,50 @@ const InputContainer = styled(Box)`
   border-radius: 5px;
   padding: 0 1rem;
 `;
+
 const CustomInput = styled(InputBase)`
   width: 100%;
 `;
 
-const Footer = ({ sendText, messageValue, setMessageValue }) => {
+const Footer = ({
+  sendText,
+  messageValue,
+  setMessageValue,
+  file,
+  setFile,
+  setFileFromServer,
+}) => {
+  const onFileChange = (e) => {
+    setFile(e.target.files[0]);
+    setMessageValue(e.target.files[0].name);
+  };
+
+  useEffect(() => {
+    const setFiles = async () => {
+      if (file) {
+        const data = new FormData();
+        data.append("name", file.name);
+        data.append("file", file);
+
+        const response = await UploadFile(data);
+        setFileFromServer(response.data);
+      }
+    };
+    setFiles();
+  }, [file, setFileFromServer]);
+
   return (
     <Container>
       <TagFacesOutlinedIcon color="icon" />
-      <AttachFileOutlinedIcon color="icon" />
+      <label htmlFor="file">
+        <AttachFileOutlinedIcon color="icon" />
+      </label>
+      <input
+        type="file"
+        id="file"
+        style={{ display: "none" }}
+        onChange={(e) => onFileChange(e)}
+      />
       <InputContainer>
         <CustomInput
           placeholder="Type a message"

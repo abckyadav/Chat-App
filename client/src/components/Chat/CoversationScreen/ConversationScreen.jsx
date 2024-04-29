@@ -22,21 +22,35 @@ const ConversationScreen = () => {
   const [messageValue, setMessageValue] = useState("");
   const [messages, setMessages] = useState([]);
   const [newMessageFlag, setNewMessageFlag] = useState(false);
+  const [file, setFile] = useState();
+  const [fileFromServer, setFileFromServer] = useState("");
 
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
 
     if (code === 13) {
-      let message = {
-        senderId: account.sub,
-        receiverId: person.sub,
-        conversationId: conversation._id,
-        type: "text",
-        text: messageValue,
-      };
-      console.log("message:", message);
+      let message = {};
+      if (!file) {
+        message = {
+          senderId: account.sub,
+          receiverId: person.sub,
+          conversationId: conversation._id,
+          type: "text",
+          text: messageValue,
+        };
+      } else {
+        message = {
+          senderId: account.sub,
+          receiverId: person.sub,
+          conversationId: conversation._id,
+          type: "file",
+          text: fileFromServer,
+        };
+      }
       await newMessage(message);
       setMessageValue("");
+      setFile("");
+      setFileFromServer("");
       setNewMessageFlag((prev) => !prev);
     }
   };
@@ -68,6 +82,9 @@ const ConversationScreen = () => {
         sendText={sendText}
         setMessageValue={setMessageValue}
         messageValue={messageValue}
+        file={file}
+        setFile={setFile}
+        setFileFromServer={setFileFromServer}
       />
     </Container>
   );

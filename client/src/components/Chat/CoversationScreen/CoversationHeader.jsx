@@ -8,7 +8,7 @@ const HeaderContainer = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  min-height: 60px;
   padding: 0 1rem;
   background: #f0f2f5;
 `;
@@ -40,7 +40,6 @@ const AccountStatus = styled(Typography)`
 `;
 
 const CoversationHeader = ({ person }) => {
-
   const [drawerStatus, setDrawerStatus] = useState(false);
   const handleDrawer = () => setDrawerStatus(true);
 

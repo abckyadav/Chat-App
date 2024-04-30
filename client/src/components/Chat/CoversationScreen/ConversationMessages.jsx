@@ -1,5 +1,5 @@
 import { Box, Typography, styled } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import {
   PdfNameExtract,
   formatDate,
@@ -12,37 +12,21 @@ import { iconPDF } from "../../../Constants/data";
 const Container = styled(Box)`
   overflow-y: auto;
   flex: 1 1 auto;
-
   display: flex;
   align-items: flex-end;
-
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-  /* For Firefox */
-  &::-moz-scrollbar {
-    width: 12px;
-  }
-  /* For Internet Explorer and Edge */
-  &::-ms-scrollbar {
-    width: 12px;
-  }
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #88888895;
-    border-radius: 10px;
-  }
+  padding-top: 1rem;
 `;
-
 const ContainerWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
-  margin: 1rem 4rem 1rem 6rem;
+  margin: 0 4rem 0 6rem;
   gap: 0.2rem;
-
+  height: 100%;
   width: 100%;
+
+  & > div:last-child {
+    padding-bottom: 1rem;
+  }
 `;
 const ReceivedText = styled(Box)`
   display: flex;
@@ -71,7 +55,6 @@ const SentText = styled(Box)`
     background-color: #d9fdd3;
   }
 `;
-
 const CutomTypography = styled(Typography)`
   padding: 0.5rem 0.5rem 0.2rem 0.5rem;
   font-size: 0.8rem;
@@ -80,7 +63,7 @@ const TimeStaps = styled(Typography)`
   min-width: fit-content;
   font-size: 0.7rem;
   color: #667781;
-  padding-right: 0.5rem;
+  padding: 0 0.5rem;
   margin-left: auto;
 `;
 const PDFAttachmentDiv = styled("div")`
@@ -89,7 +72,6 @@ const PDFAttachmentDiv = styled("div")`
     border-radius: 50%;
   }
 `;
-
 const AttachmentDiv = styled("div")`
   display: flex;
   justify-content: flex-end;
@@ -110,6 +92,11 @@ const AttachmentDiv = styled("div")`
 
 const ConversationMessages = ({ messages }) => {
   const { account } = useContext(AccountContext);
+  const scrollRef = useRef();
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ transition: "smooth" });
+  }, [messages]);
 
   const TextMessage = ({ message }) => {
     return (
@@ -183,7 +170,7 @@ const ConversationMessages = ({ messages }) => {
         {messages &&
           messages.map((message) =>
             account.sub === message.senderId ? (
-              <SentText key={message._id}>
+              <SentText key={message._id} ref={scrollRef}>
                 {message.type === "file" ? (
                   <ImageMessage message={message} />
                 ) : (
@@ -191,7 +178,7 @@ const ConversationMessages = ({ messages }) => {
                 )}
               </SentText>
             ) : (
-              <ReceivedText key={Math.random()}>
+              <ReceivedText key={message._id} ref={scrollRef}>
                 {message.type === "file" ? (
                   <ImageMessage message={message} />
                 ) : (

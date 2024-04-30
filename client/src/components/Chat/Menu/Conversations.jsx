@@ -7,28 +7,6 @@ import { AccountContext } from "../../../Context/AccountProvider";
 const ConversationContainer = styled(Box)`
   height: 80vh;
   overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  /* For Firefox */
-  &::-moz-scrollbar {
-    width: 8px;
-  }
-
-  /* For Internet Explorer and Edge */
-  &::-ms-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #88888895;
-    border-radius: 10px;
-  }
 `;
 
 const CustomDivider = styled(Divider)`

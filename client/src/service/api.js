@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const url = "http://localhost:8080";
+// const url = "http://localhost:8080";
+const url = "https://chat-app-4gs2.onrender.com";
 
 export const addUser = async (data) => {
   try {

@@ -14,16 +14,55 @@ const Container = styled(Box)`
   height: 100%;
   display: flex;
   flex-direction: column;
+  position: static;
 `;
 
 const ConversationScreen = () => {
-  const { person, account } = useContext(AccountContext);
+  const { person, account, socket, newMessageFlag, setNewMessageFlag } =
+    useContext(AccountContext);
   const [conversation, setConversation] = useState({});
   const [messageValue, setMessageValue] = useState("");
   const [messages, setMessages] = useState([]);
-  const [newMessageFlag, setNewMessageFlag] = useState(false);
+
   const [file, setFile] = useState();
   const [fileFromServer, setFileFromServer] = useState("");
+  const [incomingMessages, setIncomingMessages] = useState(null);
+
+  useEffect(() => {
+    socket.current.on("getMessage", (data) => {
+      console.log("getMessage: data:", data);
+      setIncomingMessages({
+        ...data,
+        createdAt: Date.now(),
+      });
+    });
+    console.log("messages:", messages);
+  }, [messages, socket]);
+
+  useEffect(() => {
+    const getMessageDetails = async () => {
+      let data = await getMessage(conversation?._id);
+      setMessages(data);
+    };
+    conversation?._id && getMessageDetails();
+  }, [conversation?._id, newMessageFlag]);
+
+  useEffect(() => {
+    const getConversationDetails = async () => {
+      let data = await getConversation({
+        senderId: account.sub,
+        receiverId: person.sub,
+      });
+      setConversation(data);
+    };
+    getConversationDetails();
+  }, [account.sub, person.sub]);
+
+  useEffect(() => {
+    incomingMessages &&
+      conversation?.members?.includes(incomingMessages.senderId) &&
+      setMessages((prev) => [...prev, incomingMessages]);
+  }, [incomingMessages, conversation]);
 
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
@@ -47,6 +86,9 @@ const ConversationScreen = () => {
           text: fileFromServer,
         };
       }
+
+      socket.current.emit("sendMessage", message);
+
       await newMessage(message);
       setMessageValue("");
       setFile("");
@@ -54,25 +96,6 @@ const ConversationScreen = () => {
       setNewMessageFlag((prev) => !prev);
     }
   };
-
-  useEffect(() => {
-    const getConversationDetails = async () => {
-      let data = await getConversation({
-        senderId: account.sub,
-        receiverId: person.sub,
-      });
-      setConversation(data);
-    };
-    getConversationDetails();
-  }, [account.sub, person.sub]);
-
-  useEffect(() => {
-    const getMessageDetails = async () => {
-      let data = await getMessage(conversation?._id);
-      setMessages(data);
-    };
-    conversation?._id && getMessageDetails();
-  }, [conversation?._id, newMessageFlag]);
 
   return (
     <Container>

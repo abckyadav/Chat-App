@@ -14,7 +14,7 @@ const Container = styled(Box)`
   flex: 1 1 auto;
   display: flex;
   align-items: flex-end;
-  padding-top: 1rem;
+  /* padding-top: 1rem; */
 `;
 const ContainerWrapper = styled(Box)`
   display: flex;

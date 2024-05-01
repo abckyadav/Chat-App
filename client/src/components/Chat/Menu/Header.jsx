@@ -11,9 +11,10 @@ const HeaderContainer = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 60px;
   padding: 0 1rem;
   background: #f0f2f5;
+  min-height: 65px;
+  position: relative;
 `;
 const IconsContainer = styled(Box)`
   display: flex;

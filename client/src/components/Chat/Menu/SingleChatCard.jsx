@@ -1,7 +1,8 @@
 import { Box, Typography, styled } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AccountContext } from "../../../Context/AccountProvider";
-import { setConversation } from "../../../service/api";
+import { getConversation, setConversation } from "../../../service/api";
+import { formatDate } from "../../../utils/commonUtils";
 
 const Card = styled(Box)`
   display: flex;
@@ -22,6 +23,13 @@ const Card = styled(Box)`
 const CardWrapper = styled(Box)`
   padding: 0 1rem;
 `;
+const MessageWrapper = styled(Box)`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-right: 1rem;
+`;
 
 const Image = styled("img")`
   height: 50px;
@@ -38,6 +46,19 @@ const SingleChatCard = ({ user }) => {
   const { account, person, setPerson } = useContext(AccountContext);
   // eslint-disable-next-line no-unused-vars
   const [isSelected, setIsSelected] = useState(false);
+  const [latestMessage, setLatestMessage] = useState({});
+
+  useEffect(() => {
+    const getConversationDetails = async () => {
+      const data = await getConversation({
+        senderId: account.sub,
+        receiverId: user.sub,
+      });
+
+      setLatestMessage({ text: data?.message, timestaps: data?.updatedAt });
+    };
+    getConversationDetails();
+  }, [account.sub, latestMessage, user.sub]);
 
   const getUserDetails = async () => {
     setPerson(user);
@@ -54,12 +75,21 @@ const SingleChatCard = ({ user }) => {
         <CardWrapper>
           <Image src={user.picture} alt={user.given_name} />
         </CardWrapper>
-        <Box>
+        <MessageWrapper>
           <Box>
             <Typography>{user.name}</Typography>
-            <SubText>message</SubText>
+            <SubText>
+              {latestMessage?.text?.includes("localhost")
+                ? "media"
+                : latestMessage.text}
+            </SubText>
           </Box>
-        </Box>
+          <Box>
+            {latestMessage?.text && (
+              <SubText>{formatDate(latestMessage?.timestaps)}</SubText>
+            )}
+          </Box>
+        </MessageWrapper>
       </Card>
     </>
   );

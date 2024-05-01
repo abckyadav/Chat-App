@@ -6,7 +6,7 @@ import ConversationScreen from "./CoversationScreen/ConversationScreen";
 import { AccountContext } from "../../Context/AccountProvider";
 
 const dialogStyle = {
-  height: "95%",
+  height: "95vh",
   width: "100%",
   margin: "20px",
   maxWidth: "100%",

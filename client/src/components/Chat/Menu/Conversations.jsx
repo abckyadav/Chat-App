@@ -15,7 +15,7 @@ const CustomDivider = styled(Divider)`
 `;
 
 const Conversations = ({ searchText }) => {
-  const { account } = useContext(AccountContext);
+  const { account, socket, setActiveUsers } = useContext(AccountContext);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -32,6 +32,14 @@ const Conversations = ({ searchText }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchText]);
+
+  useEffect(() => {
+    socket.current.emit("addUsers", account);
+    socket.current.on("getUsers", (users) => {
+      setActiveUsers(users);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account]);
 
   return (
     <ConversationContainer>

@@ -147,7 +147,7 @@ const ConversationMessages = ({ messages }) => {
             <img
               src={message.text}
               alt={message.name}
-              style={{ maxWidth: "300px", objectFit: "cover" }}
+              style={{ maxWidth: "200px", objectFit: "cover" }}
             />
             <AttachmentDiv>
               <FileDownload

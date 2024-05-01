@@ -80,7 +80,7 @@ const SingleChatCard = ({ user }) => {
           <Box>
             <Typography>{user.name}</Typography>
             <SubText>
-              {latestMessage?.text?.includes("chat-app")
+              {latestMessage?.text?.includes("onrender")
                 ? "media"
                 : latestMessage.text}
             </SubText>

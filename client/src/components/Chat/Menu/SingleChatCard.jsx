@@ -43,7 +43,8 @@ const SubText = styled(Typography)`
 `;
 
 const SingleChatCard = ({ user }) => {
-  const { account, person, setPerson } = useContext(AccountContext);
+  const { account, person, setPerson, newMessageFlag } =
+    useContext(AccountContext);
   // eslint-disable-next-line no-unused-vars
   const [isSelected, setIsSelected] = useState(false);
   const [latestMessage, setLatestMessage] = useState({});
@@ -58,7 +59,7 @@ const SingleChatCard = ({ user }) => {
       setLatestMessage({ text: data?.message, timestaps: data?.updatedAt });
     };
     getConversationDetails();
-  }, [account.sub, latestMessage, user.sub]);
+  }, [account.sub, user.sub, newMessageFlag]);
 
   const getUserDetails = async () => {
     setPerson(user);
@@ -79,7 +80,7 @@ const SingleChatCard = ({ user }) => {
           <Box>
             <Typography>{user.name}</Typography>
             <SubText>
-              {latestMessage?.text?.includes("localhost")
+              {latestMessage?.text?.includes("chat-app")
                 ? "media"
                 : latestMessage.text}
             </SubText>

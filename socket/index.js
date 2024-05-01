@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 
 let io = new Server(9000, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://chat-app-xi-brown.vercel.app/",
   },
 });
 let activeUsers = [];

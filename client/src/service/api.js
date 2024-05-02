@@ -6,7 +6,7 @@ const url = "https://chat-app-4gs2.onrender.com";
 export const addUser = async (data) => {
   try {
     const fetchData = await axios.post(`${url}/add`, data);
-    console.log("fetchData:", fetchData);
+    return fetchData.data;
   } catch (error) {
     console.log("Error adding user: ", error);
   }
@@ -15,7 +15,7 @@ export const addUser = async (data) => {
 export const getUsers = async () => {
   try {
     const response = await axios.get(`${url}/users`);
-    console.log("response:", response.data);
+
     return response.data;
   } catch (error) {
     console.log("Error getting user: ", error);
@@ -49,7 +49,6 @@ export const newMessage = async (data) => {
 export const getMessage = async (id) => {
   try {
     let response = await axios.get(`${url}/message/get/${id}`);
-    console.log("response:", response.data);
     return response.data;
   } catch (error) {
     console.log("Error in getMessage:", error.message);
@@ -57,7 +56,6 @@ export const getMessage = async (id) => {
 };
 
 export const UploadFile = async (data) => {
-  
   try {
     return await axios.post(`${url}/file/upload`, data);
   } catch (error) {

@@ -59,7 +59,7 @@ const SingleChatCard = ({ user }) => {
       setLatestMessage({ text: data?.message, timestaps: data?.updatedAt });
     };
     getConversationDetails();
-  }, [account.sub, user.sub, newMessageFlag]);
+  }, [newMessageFlag]);
 
   const getUserDetails = async () => {
     setPerson(user);

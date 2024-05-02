@@ -3,6 +3,7 @@ import { getUsers } from "../../../service/api";
 import { Box, Divider, styled } from "@mui/material";
 import SingleChatCard from "./SingleChatCard";
 import { AccountContext } from "../../../Context/AccountProvider";
+import Loader from "../../loader/CircularLoader";
 
 const ConversationContainer = styled(Box)`
   height: 100%;
@@ -17,15 +18,23 @@ const CustomDivider = styled(Divider)`
 const Conversations = ({ searchText }) => {
   const { account, socket, setActiveUsers } = useContext(AccountContext);
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await getUsers();
+      setLoading(true);
+      try {
+        const res = await getUsers();
 
-      const filteredUsers = res.filter((user) =>
-        user.name.toLowerCase().includes(searchText.toLowerCase())
-      );
-      setUsers(filteredUsers);
+        const filteredUsers = res.filter((user) =>
+          user.name.toLowerCase().includes(searchText.toLowerCase())
+        );
+        setUsers(filteredUsers);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchUsers();
@@ -41,7 +50,9 @@ const Conversations = ({ searchText }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <ConversationContainer>
       {users &&
         users?.map(

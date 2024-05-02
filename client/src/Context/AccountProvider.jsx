@@ -10,7 +10,9 @@ const AccountProvider = ({ children }) => {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("https://chat-app-1-3wx1.onrender.com");
+    socket.current = io(
+      "ws://localhost:9000" || "https://chat-app-1-3wx1.onrender.com"
+    );
   }, []);
 
   return (

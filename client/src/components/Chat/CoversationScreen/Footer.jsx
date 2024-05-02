@@ -7,7 +7,7 @@ import { UploadFile } from "../../../service/api";
 
 const Container = styled(Box)`
   background-color: #f0f2f5;
-  height: 50px;
+  min-height: 65px;
   display: flex;
   align-items: center;
   padding: 0 1rem;

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import grid from "gridfs-stream";
 
 // const url = "http://localhost:8080";
-const url = "https://chat-app-4gs2.onrender.com";
+const url = "http://localhost:3000" || "https://chat-app-4gs2.onrender.com";
 const conn = mongoose.connection;
 
 let gfs, gridfsBucket;

@@ -30,22 +30,20 @@ const ConversationScreen = () => {
 
   useEffect(() => {
     socket.current.on("getMessage", (data) => {
-      console.log("getMessage: data:", data);
       setIncomingMessages({
         ...data,
         createdAt: Date.now(),
       });
     });
-    console.log("messages:", messages);
-  }, [messages, socket]);
+  }, []);
 
   useEffect(() => {
     const getMessageDetails = async () => {
       let data = await getMessage(conversation?._id);
       setMessages(data);
     };
-    conversation?._id && getMessageDetails();
-  }, [conversation?._id, newMessageFlag]);
+    getMessageDetails();
+  }, [conversation?._id, person._id, newMessageFlag]);
 
   useEffect(() => {
     const getConversationDetails = async () => {

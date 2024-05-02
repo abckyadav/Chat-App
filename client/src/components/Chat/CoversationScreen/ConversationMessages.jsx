@@ -17,13 +17,12 @@ const Container = styled(Box)`
   /* padding-top: 1rem; */
 `;
 const ContainerWrapper = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  margin: 0 4rem 0 6rem;
-  gap: 0.2rem;
+  padding: 0 4rem 0 6rem;
   height: 100%;
   width: 100%;
+  overflow: scroll;
+  display: grid;
+  align-items: end;
 
   & > div:last-child {
     padding-bottom: 1rem;
@@ -168,26 +167,34 @@ const ConversationMessages = ({ messages }) => {
   return (
     <Container>
       <ContainerWrapper>
-        {messages &&
-          messages.map((message) =>
-            account.sub === message.senderId ? (
-              <SentText key={message._id} ref={scrollRef}>
-                {message.type === "file" ? (
-                  <ImageMessage message={message} />
-                ) : (
-                  <TextMessage message={message} />
-                )}
-              </SentText>
-            ) : (
-              <ReceivedText key={message._id} ref={scrollRef}>
-                {message.type === "file" ? (
-                  <ImageMessage message={message} />
-                ) : (
-                  <TextMessage message={message} />
-                )}
-              </ReceivedText>
-            )
-          )}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.2rem",
+          }}
+        >
+          {messages &&
+            messages.map((message) =>
+              account.sub === message.senderId ? (
+                <SentText key={message._id} ref={scrollRef}>
+                  {message.type === "file" ? (
+                    <ImageMessage message={message} />
+                  ) : (
+                    <TextMessage message={message} />
+                  )}
+                </SentText>
+              ) : (
+                <ReceivedText key={message._id} ref={scrollRef}>
+                  {message.type === "file" ? (
+                    <ImageMessage message={message} />
+                  ) : (
+                    <TextMessage message={message} />
+                  )}
+                </ReceivedText>
+              )
+            )}
+        </div>
       </ContainerWrapper>
     </Container>
   );

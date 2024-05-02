@@ -1,9 +1,9 @@
 import { Avatar, Box, Typography, styled } from "@mui/material";
 import React, { useState, useContext } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import HeaderMenu from "../Menu/HeaderMenu";
 import InfoDrawer from "../../drawer/InfoDrawer";
 import { AccountContext } from "../../../Context/AccountProvider";
+import ConversationHeaderMenu from "./ConversationHeaderMenu";
 
 const HeaderContainer = styled(Box)`
   display: flex;
@@ -46,7 +46,6 @@ const CoversationHeader = ({ person }) => {
   const handleDrawer = () => setDrawerStatus(true);
   const { activeUsers } = useContext(AccountContext);
 
-
   return (
     <HeaderContainer>
       <LeftContainer>
@@ -55,7 +54,7 @@ const CoversationHeader = ({ person }) => {
             alt={person.given_name}
             src={person.picture}
             sx={{ cursor: "pointer" }}
-            onClick={handleDrawer}
+            // onClick={handleDrawer}
           />
         </Box>
         <Box>
@@ -72,7 +71,7 @@ const CoversationHeader = ({ person }) => {
 
       <RightContainer>
         <SearchIcon color="icon" />
-        <HeaderMenu setOpen={setDrawerStatus} />
+        <ConversationHeaderMenu setOpen={setDrawerStatus} />
       </RightContainer>
     </HeaderContainer>
   );

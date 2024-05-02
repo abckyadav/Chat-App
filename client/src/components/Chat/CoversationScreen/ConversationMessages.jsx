@@ -8,6 +8,7 @@ import {
 import { AccountContext } from "../../../Context/AccountProvider";
 import FileDownload from "@mui/icons-material/FileDownload";
 import { iconPDF } from "../../../Constants/data";
+import CircularLoader from "../../loader/CircularLoader";
 
 const Container = styled(Box)`
   overflow-y: auto;
@@ -167,6 +168,7 @@ const ConversationMessages = ({ messages }) => {
   return (
     <Container>
       <ContainerWrapper>
+        {!messages && <CircularLoader />}
         <div
           style={{
             display: "flex",

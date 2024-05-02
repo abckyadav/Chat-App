@@ -5,7 +5,7 @@ import SingleChatCard from "./SingleChatCard";
 import { AccountContext } from "../../../Context/AccountProvider";
 
 const ConversationContainer = styled(Box)`
-  height: 80vh;
+  height: 100%;
   overflow-y: auto;
 `;
 

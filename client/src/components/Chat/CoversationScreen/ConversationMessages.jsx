@@ -19,6 +19,7 @@ const Container = styled(Box)`
 const ContainerWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   margin: 0 4rem 0 6rem;
   gap: 0.2rem;
   height: 100%;
